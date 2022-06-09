@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagemenyShopify.WEB", "ManagemenyShopify.WEB\ManagemenyShopify.WEB.csproj", "{30FB3547-049D-46E0-87DD-9D95F8D12E0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagemenyShopify.Test", "ManagemenyShopify.Test\ManagemenyShopify.Test.csproj", "{2E04A353-CB98-4D42-8142-3BCCC034B754}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30FB3547-049D-46E0-87DD-9D95F8D12E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30FB3547-049D-46E0-87DD-9D95F8D12E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30FB3547-049D-46E0-87DD-9D95F8D12E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30FB3547-049D-46E0-87DD-9D95F8D12E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E04A353-CB98-4D42-8142-3BCCC034B754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E04A353-CB98-4D42-8142-3BCCC034B754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E04A353-CB98-4D42-8142-3BCCC034B754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E04A353-CB98-4D42-8142-3BCCC034B754}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD9317FE-BFC1-48A0-8995-950D90E23519}
+	EndGlobalSection
+EndGlobal
