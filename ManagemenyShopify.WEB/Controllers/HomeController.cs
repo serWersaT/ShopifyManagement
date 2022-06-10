@@ -1,52 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Web;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ManagemenyShopify.WEB.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using ManagemenyShopify.WEB.Models;
 using ShopifySharp;
-using Microsoft.Extensions.Primitives;
-using System.Collections.Specialized;
-using ShopifySharp.Enums;
+using ManagemenyShopify.WEB.Models;
+using System.Xml;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace ManagemenyShopify.WEB.Controllers
 {
-    public static class Extensions
-    {
-        public static List<KeyValuePair<string, StringValues>> ToKvps(this System.Collections.Specialized.NameValueCollection qs)
-        {
-            Dictionary<string, string> parameters = qs.Keys.Cast<string>().ToDictionary(key => key, value => qs[value]);
-            var kvps = new List<KeyValuePair<string, StringValues>>();
-
-            parameters.ToList().ForEach(x =>
-            {
-                kvps.Add(new KeyValuePair<string, StringValues>(x.Key, new StringValues(x.Value)));
-            });
-
-            return kvps;
-        }
-
-
-
-        public static IEnumerable<KeyValuePair<string, StringValues>> ToKVPairs(this NameValueCollection collection)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            return collection.Cast<string>().Select(key => new KeyValuePair<string, StringValues>(key, collection[key]));
-        }
-    }
-
 
     public class HomeController : Controller
     {
-        Service service = new Service();
-
+        
+        const string MyShopifyUrl = "https://fashion-maverick-009.myshopify.com/";
+        const string redirectUrl = "https://fashion-maverick-009.myshopify.com/admin/oauth/authorize";
+        const string shopifyApiKey = "6bbfae03b9537d545dbd7ae2c6bd7ab3";
+        const string shopifySecretKey = "ece45fea8a4177b72108121d7dfb428c";
+        const string accessToken = "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";
+        Service service = new Service(MyShopifyUrl, accessToken);
         public IActionResult Index()
         {
             return View();
@@ -54,57 +29,62 @@ namespace ManagemenyShopify.WEB.Controllers
 
 
         [HttpPost]
-        public JsonResult PostTest()
+        public JsonResult PostTest([FromBody] string id)
         {
-            return Json("test completed");
+            return Json(id);
         }
 
 
         [HttpPost]
-        public async Task<JsonResult> CheckAddress()
+        public JsonResult GetOrder([FromBody] string id)    //получить информацию о заказе
         {
-
-            try
-            {
-                string MyShopifyUrl = "https://store-testing-com.myshopify.com/";
-                string redirectUrl = "https://store-testing-com.myshopify.com/";
-
-                string shopifyApiKey = "3ecce54a6685d4ff5b5fc41f67fbe3a4";
-                string shopifySecretKey = "d3214f42a6428f5413a9336ad1918424";
+            if(service.GetOrder(Convert.ToInt32(id)) != null)
+                return Json(service.GetOrder(Convert.ToInt32(id)));
+            else
+                return Json("Нет данных");            
+        }
 
 
-                var service1 = new ProductService(MyShopifyUrl, "*Raider67451");
-                var eee = Response.StatusCode;
-                bool isValidDomain = await AuthorizationService.IsValidShopDomainAsync(MyShopifyUrl);  /*проверяет корректность адреса*/
-                
-                var scopes1 = new List<AuthorizationScope>()
-                {
-                    AuthorizationScope.ReadCustomers,
-                    AuthorizationScope.WriteCustomers
-                };
+        [HttpPost]
+        public JsonResult OrdersCount()    //получить количество заказов
+        {
+            return Json(service.OrdersCount());
+        }
 
-                var scopes2 = new List<string>()
-                {
-                 "read_customers",
-                "write_customers"
-                };
+        [HttpPost]
+        public JsonResult GetOrderById(int id)    //получить количество заказов
+        {
+            return Json(service.GetOrderById(id));
+        }
 
-                Uri authUrl = AuthorizationService.BuildAuthorizationUrl(scopes1, MyShopifyUrl, shopifyApiKey, redirectUrl);
+        [HttpPost]
+        public JsonResult DeleteOrder(int id)    //получить количество заказов
+        {
+            return Json(service.GetOrderById(id));
+        }
 
-                string code = "33e7c58fa67c3892455b89003e7959e2";
-                string code2 = authUrl.Query;
-                string myShopifyUrl = Request.Query["shop"];
 
-                //string accessToken = await AuthorizationService.Authorize(code, MyShopifyUrl, shopifyApiKey, shopifySecretKey);
-                string accessToken = await AuthorizationService.Authorize("33e7c58fa67c3892455b89003e7959e2", MyShopifyUrl, "3ecce54a6685d4ff5b5fc41f67fbe3a4", "d3214f42a6428f5413a9336ad1918424");
 
-                return Json(accessToken);
-            }
-            catch (Exception ex)
-            {
-                return Json("Error:" + ex.ToString());
-            }
+        [HttpPost]
+        public JsonResult CreateAddress()    //создаем заказ в shopisy и сохраняем его у себя в json
+        {
+            var model = new OrderTestModel();
+            return Json(service.CreateOrder(model.OrderModel()));
+        }
 
+
+        [HttpPost]
+        public JsonResult RebornOrder(int id)    //Воскрешаем заказ
+        {
+            var model = new OrderTestModel();
+            return Json(service.RebornOrder(id));
+        }
+
+        [HttpPost]
+        public JsonResult UpdateOrder(int orderId)    //Обновить заказ
+        {
+            var model = new OrderTestModel();
+            return Json(service.UpdateOrder(orderId, model.OrderModel()));
         }
 
     }
