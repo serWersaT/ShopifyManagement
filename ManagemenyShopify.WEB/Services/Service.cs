@@ -120,7 +120,7 @@ namespace ManagemenyShopify.WEB.Services
             try
             {
                 var orderService = new OrderService(_MyShopifyUrl, _accessToken);
-                var order = await orderService.CreateAsync(DesirializeOrder());    /*закоммичено чтобы не захламлять список левых заказов. Проверено - работает*/
+                var order = await orderService.CreateAsync(DesirializeOrder());    
                 return "Воскрешение выполнено";
             }
             catch (Exception ex)
@@ -137,7 +137,7 @@ namespace ManagemenyShopify.WEB.Services
                 SerializeOrder(saveorder);  //сохраняем старую версию заказа
 
                 var orderService = new OrderService(_MyShopifyUrl, _accessToken);
-                var update = await orderService.UpdateAsync(orderId, order);    /*закоммичено чтобы не захламлять список левых заказов. Проверено - работает*/
+                var update = await orderService.UpdateAsync(orderId, order);    
                 SerializeOrder(update);  //сохраняем новую версию заказа
                 return "Обновлени выполнено";
             }
